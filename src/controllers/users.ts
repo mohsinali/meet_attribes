@@ -21,7 +21,7 @@ export let signin = (req: Request, res: Response, next: NextFunction) => {
   const errors = req.validationErrors();
 
   if (errors) {
-    msg = { error: "Email or password not correct." };
+    msg = { error: "Please enter a valid email and password." };
     res.json(msg);
     return;
   }
@@ -33,13 +33,14 @@ export let signin = (req: Request, res: Response, next: NextFunction) => {
         return next(err);
       }
       if (!user) {
-        // req.flash("errors", info.message);
-        msg = { error: "User nahi mila" };
+        msg = { error: "User with this email does not exist." };
         res.json(msg);
         return;
       }
       req.logIn(user, err => {
-        msg = err ? { error: "Ghalat login" } : { error: "Mil gaya" };
+        msg = err
+          ? { error: "The email and password you entered is incorrect." }
+          : { error: "Mil gaya" };
 
         res.json(msg);
         return;
